@@ -28,11 +28,11 @@ class BoundaryAnnotations < Chef::Handler
   # Some of this code was borrowed from https://github.com/portertech/chef-irc-snitch
   #
 
-  def initialize(boundary_orgid, boundary_apikey, github_user, github_token)
-    @boundary_orgid = boundary_orgid
-    @boundary_apikey = boundary_apikey
-    @github_user = github_user
-    @github_token = github_token
+  def initialize(args ={})
+    @boundary_orgid = args.delete(:boundary_orgid)
+    @boundary_apikey = args.delete(:boundary_apikey)
+    @github_user = args.delete(:github_user)
+    @github_token = args.delete(:github_token)
   end
 
   def fmt_run_list

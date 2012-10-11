@@ -34,3 +34,30 @@ Append the following to your Chef client configs, usually at `/etc/chef/client.r
 
     # enable it as a report handler (only creates an annotation for changes)
     report_handlers << boundary_annotations
+
+Or using the chef_handler LWRP
+
+    include_recipe 'chef_handler'
+
+    # install the chef-boundary-annotations-handler gem
+    chef_gem 'chef-boundary-annotations-handler'
+
+    # load the gem so it is in the LOAD_PATH ready for chef_handler
+    require 'chef-boundary-annotations-handler'
+
+    # Activate the chef_handler immediately during compile phase
+    chef_handler 'chef-boundary-annotations-handler' do
+      source 'chef-boundary-annotations-handler'
+      arguments Mash.new(node["boundary"].to_hash).symbolize_keys
+      action :enable
+    end
+
+To use the LWRP you will want to set the boundary attributes
+
+    # boundary account info for creating the annotation
+    node['boundary']['boundary_orgid']
+    node['boundary']['boundary_apikey']
+
+    # github account info for gist
+    node['boundary']['github_user']
+    node['boundary']['github_token']
